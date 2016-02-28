@@ -3,7 +3,7 @@
 Originally presented at Dayton Web Developers Meetup on March 2nd, 2016
 
 ## View Presentation
-[http://bretterer-talks.github.io/REST-API-Design]()
+[http://bretterer-talks.github.io/REST-API-Design](http://bretterer-talks.github.io/REST-API-Design)
 
 ## License
 
