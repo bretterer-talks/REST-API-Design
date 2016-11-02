@@ -14,11 +14,11 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-		<link rel="stylesheet" href="css/reveal.css">
+		<!--<link rel="stylesheet" href="css/reveal.css">-->
 		<link rel="stylesheet" href="css/theme/stormpath.css" id="theme">
 
 		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<!--<link rel="stylesheet" href="lib/css/zenburn.css">-->
 
 
 		<!-- Printing and PDF exports -->
@@ -38,664 +38,888 @@
 	<body>
 		<div class="color-bar top"></div>
 		<div class="reveal">
-
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>Designing a Beautiful REST+JSON API</h1>
-					<p>
-						<h3>Brian Retterer</h3>
-						<h5>brian@stormpath.com</h5>
-						<h5>@bretterer</h5>
-					</p>
-				</section>
-
-				<section>
-					<img class="plain" src="images/logo-blue-web.png"/>
-
-					<ul>
-						<li class="fragment" data-fragment-index="0">Complete Identity API</li>
-						<li class="fragment" data-fragment-index="1">Authentication, Authorization,&nbsp;and User Management for Any Application</li>
-						<li class="fragment" data-fragment-index="2">Multi-tenancy Support</li>
-						<li class="fragment" data-fragment-index="3">SAML&nbsp;</li>
-						<li class="fragment" data-fragment-index="4">Developer Tools, SDK's, and Libraries</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>HATEOAS</h2>
-					<p style="text-align: left">
-						<div  style="text-align: left"><strong>H</strong>ypermedia</div>
-						<div  style="text-align: left"><strong>A</strong>s</div>
-						<div  style="text-align: left"><strong>T</strong>he</div>
-						<div  style="text-align: left"><strong>E</strong>ngine</div>
-						<div  style="text-align: left"><strong>O</strong>f</div>
-						<div  style="text-align: left"><strong>A</strong>pplication</div>
-						<div  style="text-align: left"><strong>S</strong>tate</div>
-					</p>
-
-					<aside class="notes">
-						<p>HATEOAS is giving all information to the user that it needs.</p>
-						<p>A consumer knows nothing about your REST api</p>
-						<p>Linking to other resources from within the resource</p>
-						<p>Everything you want and need should be represented</p>
-					</aside>
-				</section>
-
-				<section>
-					<h2>REST Is Easy</h2>
-					<aside class="notes">for consumers it is easy!</aside>
-				</section>
-
-				<section>
-					<h2>REST Is Fucking Hard!</h2>
-					<aside class="notes">
-						<p>for providers</p>
-						<p>it is a style.  no standards</p>
-						set of conventions
-					</aside>
-				</section>
-
-				<section>
-					<h2>Examples from Stormpath</h2>
-
-					<h5>Applications</h5>
-					<h5>Directories</h5>
-					<h5>Accounts</h5>
-					<h5>Groups</h5>
-					<h5>Workflows</h5>
-
-					<aside class="notes">
-
-					</aside>
-
-				</section>
-
-				<section>
-					<h2>Resources</h2>
-
-					<p>Nouns, Not Verbs</p>
-
-					<p>We are talking about accounts, not about creating accounts.</p>
-
-					<p>Coarse Grained, not fine grained</p>
-
-					<aside class="notes">
-						Accounts,  not creating an account
-					</aside>
-
-				</section>
-
-				<section>
-					<section>
-						<h2>Coarse Grained</h2>
-						<h5>Tightly Coupled to Action</h5>
-
-						<p style="font-size: 30px">
-							<span>/getAccount</span><br />
-							<span>/createDirectory</span><br />
-							<span>/updateGroup</span><br />
-							<span>/verifyAccountEmailAddress</span><br />
-						</p>
-
-						<aside class="notes">
-							tightly coupled can explode
-						</aside>
-
-					</section>
-
-					<section>
-						<h2>Coarse Grained</h2>
-						<h5>This Smells!</h5>
-						<p style="font-size: 30px">
-							<span>/getAccount</span><br />
-							<span>/getAllAccounts</span><br />
-							<span>/searchAccounts</span><br />
-							<span>/createDirectory</span><br />
-							<span>/createSocialDirectory</span><br />
-							<span>/createSamlDirectory</span><br />
-							<span>/updateGroup</span><br />
-							<span>/updateGroupName</span><br />
-							<span>/verifyAccountEmailAddress</span><br />
-							<span>/verifyAccountEmailAddressByToken</span><br />
-							<span>...</span><br />
-						</p>
-
-						<aside class="notes">
-							tightly coupled can explode
-						</aside>
-
-					</section>
-				</section>
-
-				<section>
-					<h2>Keep It Simple!</h2>
-					<aside class="notes">
-
-					</aside>
-				</section>
-
-				<section>
-					<section>
-						<h2>Two Types of Resources</h2>
-
-						<h6>Collection Resources</h6>
-						<h6>Instance Resources</h6>
-						<aside class="notes">
-
-						</aside>
-					</section>
-
-					<section>
-						<h2>Collection Resources</h2>
-
-						<h5>/applications</h5>
-					</section>
-
-					<section>
-						<h2>Instance Resources</h2>
-
-						<h5>/applications/123</h5>
-					</section>
-
-				</section>
-
-				<section>
-					<section>
-						<h2>Behavior</h2>
-
-						<h5>GET</h5>
-						<h5>PUT</h5>
-						<h5>POST</h5>
-						<h5>DELETE</h5>
-						<h5>HEAD</h5>
-					</section>
-
-					<section>
-						<h2>Behavior</h2>
-
-						<h5>POST, GET, PUT, DELETE</h5>
-						<h3>!= 1:1</h3>
-						<h5>Create, Read, Update, Delete</h5>
-					</section>
-
-					<section>
-						<h2>Behavior</h2>
-
-						<ul>
-							<li><strong>GET</strong> = Read</li>
-							<li><strong>DELETE</strong> = Delete</li>
-							<li><strong>HEAD</strong> = Headers, No Body</li>
-						</ul>
-
-						<p><code style="color: #0063FF">PUT</code> and <code style="color: #0063FF">POST</code> can both be used for Create and Update</p>
-					</section>
-
-					<section>
-						<h2>PUT for Create</h2>
-
-						<p>Identifier is known by Client:</p>
-						<pre><code class="hljs" data-trim contenteditable>
-PUT /applications/{clientSpecifiedId}
+			<div class="theme-font-montserrat theme-color-black-orange" style="width: 100%; height: 100%;">
+				<div class="reveal">
+					<div class="slides">
+						<section></section>
+						<section class="has-dark-background" data-background-color="#222222">
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 365px; left: 435px; top: 284px;">
+								<div class="sl-block-content" style="z-index: 11;">
+									<p style="text-align: left;">
+										<span style="font-size:1.6em">Beautiful REST</span>
+									</p>
+									<p style="text-align: left;">
+										<span style="font-size:1.6em">API Design</span>
+									</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 400px; top: 210px;">
+								<div class="sl-block-content" data-line-x1="20" data-line-y1="240" data-line-x2="20" data-line-y2="-40" data-line-color="#ff9900" data-line-start-type="none" data-line-end-type="none" style="z-index: 12;">
+									<svg
+											xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMidYMid" width="1" height="280" viewBox="20 -40 1 280">
+										<line stroke="rgba(0,0,0,0)" stroke-width="15" x1="20" y1="240" x2="20" y2="-40"></line>
+										<line stroke="#ff9900" stroke-width="2" x1="20" y1="240" x2="20" y2="-40"></line>
+									</svg>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 320px; left: 44px; top: 261px;">
+								<div class="sl-block-content" style="z-index: 13;">
+									<p style="text-align: right;">Brian Retterer</p>
+									<p style="text-align: right;">@bretterer</p>
+									<p style="text-align: right;">&nbsp;</p>
+									<p style="text-align: right;">brian@stormpath.com</p>
+								</div>
+							</div>
+						</section>
+						<section>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 678px; left: 80px; top: 33px;">
+								<div class="sl-block-content" style="z-index: 10;">
+									<h2 style="text-align: left;">Bad REST API design</h2>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 247px; left: 34px; top: 121px;">
+								<div class="sl-block-content fragment" style="z-index: 11; font-size: 75%;" data-fragment-index="0">
+									<p style="text-align: left;">/getAccount?id=3</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 229px; left: 457px; top: 121px;">
+								<div class="sl-block-content fragment" style="z-index: 12; font-size: 75%;" data-fragment-index="1">
+									<p style="text-align: left;">/createAccount</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 258px; left: 591px; top: 261px;">
+								<div class="sl-block-content fragment" style="z-index: 13; font-size: 75%;" data-fragment-index="3">
+									<p style="text-align:left">/deleteUser?id=3</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 313px; left: 602px; top: 182px;">
+								<div class="sl-block-content fragment" style="z-index: 14; font-size: 75%;" data-fragment-index="9">
+									<p style="text-align:left">/updateAccount?id=3&amp;json=1</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 229px; left: 80px; top: 276px;">
+								<div class="sl-block-content fragment" style="z-index: 15; font-size: 75%;" data-fragment-index="5">
+									<p style="text-align:left">/getAllAccounts</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 490px; left: 411px; top: 311px;">
+								<div class="sl-block-content fragment" style="z-index: 17; font-size: 75%;" data-fragment-index="6">
+									<p style="text-align:left">/searchForAccount?fname=homer</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 451px; left: 15px; top: 369px;">
+								<div class="sl-block-content fragment" style="z-index: 18; font-size: 75%;" data-fragment-index="9">
+									<p style="text-align:left">/getAccountComments?id=3&amp;return=json</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 511px; left: 25px; top: 197px;">
+								<div class="sl-block-content fragment" style="z-index: 19; font-size: 75%;" data-fragment-index="4">
+									<p style="text-align:left">/getAccount?id=3&amp;withComments=1</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 419px; left: 97px; top: 571px;">
+								<div class="sl-block-content fragment" style="z-index: 20; font-size: 75%;" data-fragment-index="9">
+									<p style="text-align:left">/getAllAccounts?format=json</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 718px; left: 177px; top: 441px;">
+								<div class="sl-block-content fragment" style="z-index: 21; font-size: 75%;" data-fragment-index="10">
+									<p style="text-align:left">/searchForAccount?fname=homer&amp;return=xml</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 380px; left: 441px; top: 496px;">
+								<div class="sl-block-content fragment" style="z-index: 22; font-size: 75%;" data-fragment-index="8">
+									<p style="text-align:left">/deleteAccount?id=3</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 921px; left: 39px; top: 637px;">
+								<div class="sl-block-content fragment" style="z-index: 23;" data-fragment-index="11">
+									<p style="text-align:left">/addCommentByAccount?id=3&amp;comment=This+API+SUCKS</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 455px; left: 31px; top: 151px;">
+								<div class="sl-block-content fragment" style="z-index: 24; font-size: 75%;" data-fragment-index="9">
+									<p style="text-align:left">/getAccount?id=3&amp;return=json</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 511px; left: 25px; top: 221px;">
+								<div class="sl-block-content fragment" style="z-index: 25; font-size: 75%;" data-fragment-index="9">
+									<p style="text-align:left">/getAccount?id=3&amp;withComments=1&amp;fmt=json</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 451px; left: 15px; top: 345px;">
+								<div class="sl-block-content fragment" style="z-index: 26; font-size: 75%;" data-fragment-index="7">
+									<p style="text-align:left">/getAccountComments?id=3</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 313px; left: 631px; top: 152px;">
+								<div class="sl-block-content fragment" style="z-index: 27; font-size: 75%;" data-fragment-index="2">
+									<p style="text-align:left">/updateAccount?id=3</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 289px; left: 78px; top: 306px;">
+								<div class="sl-block-content fragment" style="z-index: 28; font-size: 75%;" data-fragment-index="9">
+									<p style="text-align:left">/getAllAccounts?json=true</p>
+								</div>
+							</div>
+						</section>
+						<section>
+							<div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;">
+								<div class="sl-block-content" style="font-size: 200%; text-align: left;">
+									<h1>Bad</h1>
+									<h1>
+										<s>REST</s>
+										<br/>
+										API
+									</h1>
+								</div>
+							</div>
+						</section>
+						<section>
+							<div class="sl-block" data-block-type="text" style="width: 410px; left: 275px; top: 33px; height: auto;">
+								<div class="sl-block-content" style="text-align: left; z-index: 11;">
+									<h2 style="text-align: center;">HATEOAS</h2>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;">
+								<div class="sl-block-content" style="text-align: left; z-index: 12;">
+									<p>
+										<span style="font-size:0.9em">"A REST API should be entered with no prior knowledge beyond the initial URI (bookmark) and set of standardized media types that are appropriate for the intended audience (i.e., expected to be understood by any client that might use the API). From that point on, all application state transitions must be driven by client selection of server-provided choices that are present in the received representations or implied by the user’s manipulation of those representations." &nbsp;- Dr. Fielding</span>
+									</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="image" style="min-width: 30px; min-height: 30px; width: 800px; height: 450.704px; left: 80px; top: 140px;">
+								<div class="sl-block-content fragment" style="z-index: 13;" data-fragment-index="0">
+									<img data-natural-width="568" data-natural-height="320" data-src="images/confusedDog.gif"/>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 160px; top: 517px;">
+								<div class="sl-block-content fragment" style="z-index: 14;" data-fragment-index="0">
+									<h2>WHAT?</h2>
+								</div>
+							</div>
+						</section>
+						<section>
+							<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+								<div class="sl-block-content">
+									<h2>What is a good REST API?</h2>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 307px; height: auto;">
+								<div class="sl-block-content">
+									<ul>
+										<li class="fragment" data-fragment-index="0">Discoverable and self documented</li>
+										<li class="fragment" data-fragment-index="1">Represent Instance Resources and Collections</li>
+										<li class="fragment" data-fragment-index="2">Use HTTP verbs</li>
+										<li class="fragment" data-fragment-index="3">Keep it simple where possible (KISS Method)</li>
+									</ul>
+								</div>
+							</div>
+						</section>
+						<section class="stack">
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;">
+									<div class="sl-block-content" style="font-size: 200%; text-align: left;">
+										<h1>Lets
+											<br/>
+											Talk
+											<br/>
+											Verbs
+										</h1>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;">
+									<div class="sl-block-content">
+										<h1>Behavior</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 342px; height: auto;">
+									<div class="sl-block-content">
+										<h3>Create, Read, Update, Delete</h3>
+										<p>!= 1:1</p>
+										<h3>Post, Get, Put, Delete</h3>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;">
+									<div class="sl-block-content">
+										<h1>Behavior</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 287px; height: auto;">
+									<div class="sl-block-content">
+										<ul>
+											<li>
+												<p>
+													<strong>GET = </strong>READ
+												</p>
+											</li>
+											<li>
+												<p>
+													<strong>DELETE = </strong>DELETE
+												</p>
+											</li>
+											<li>
+												<p>
+													<strong>HEAD = </strong>Headers Only, No Body
+												</p>
+											</li>
+											<li>
+												<p>
+													<strong>OPTIONS = </strong>All available options for endpoint
+												</p>
+											</li>
+										</ul>
+										<p>​
+											<span style="color:#FF8C00">POST </span>and
+											<span style="color:#FF8C00">PUT </span>can be used for create and update
+										</p>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1>PUT FOR CREATE</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 280px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<p>Identifier is known by Client:</p>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 800px; height: 280px; left: 80px; top: 350px;">
+									<div class="sl-block-content" style="z-index: 13; font-size: 200%;">
+                            <pre><code>PUT /applications/{clientSpecifiedId}
 
 {
 	...
-}
-						</code></pre>
-					</section>
-
-					<section>
-						<h2>PUT for Update</h2>
-
-						<p>Full Replacement:</p>
-						<pre><code class="hljs" data-trim contenteditable>
-PUT /applications/{existingId}
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1>PUT FOR UPDATE</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 280px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<p>Full Replacement:</p>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 800px; height: 280px; left: 80px; top: 350px;">
+									<div class="sl-block-content" style="z-index: 13; font-size: 200%;">
+                            <pre><code>PUT /applications/{existingId}
 
 {
 	"name": "Marvel Comics",
 	"description": "We are the best!"
-}
-						</code></pre>
-					</section>
-
-					<section>
-						<h2>POST for Create</h2>
-
-						<p>On Parent Resource:</p>
-						<pre><code class="hljs" data-trim contenteditable>
-POST /applications
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1>POST FOR CREATE</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 280px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<p>On Parent Resource</p>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 800px; height: 280px; left: 80px; top: 350px;">
+									<div class="sl-block-content" style="z-index: 13; font-size: 200%;">
+                            <pre><code>POST /applications
 
 {
     "name": "DC Comics",
     "description": "We are the best!"
-}
-
-						</code></pre>
-						<p>Response</p>
-
-						<pre><code class="hljs" data-trim contenteditable>
-201 Created
-Location: https://api.stormpath.com/v1/applications/abc123
-
-						</code></pre>
-					</section>
-
-					<section>
-						<h2>POST for Update</h2>
-
-						<p>On Instance Resource:</p>
-						<pre><code class="hljs" data-trim contenteditable>
-POST /applications/abc123
-
-{
-    "description": "Ok, Marvel is better than us!"
-}
-
-						</code></pre>
-						<p>Response</p>
-
-						<pre><code class="hljs" data-trim contenteditable>
-200 Ok
-
-						</code></pre>
-					</section>
-				</section>
-
-				<section>
-					<h2>Media Types</h2>
-
-					<ul>
-						<li>Format Specification + Parsing Rules</li>
-						<li>Request: <code style="color:#0063ff">Accept</code> header</li>
-						<li>Response: <code style="color:#0063ff">Content-Type</code> header</li>
-						<br/>
-						<br/>
-						<li><code style="color:#0063ff">application/json</code></li>
-						<li><code style="color:#0063ff">application/foo+json</code></li>
-					</ul>
-				</section>
-
-				<section>
-					<h1>Design Time</h1>
-				</section>
-
-				<section>
-					<section>
-						<h1>Base URL</h1>
-					</section>
-
-					<section>
-						<h4>https://api.stormpath.com</h4>
-						<p>VS</p>
-						<h4>https://www.stormpath.com/developer/service/api/public/rest</h4>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h1>Versioning</h1>
-					</section>
-
-					<section>
-						<h4>https://api.stormpath.com/v1</h4>
-						<p>VS</p>
-						<h4>application/foo+json;application&v=1</h4>
-					</section>
-				</section>
-
-				<section>
-					<h2>camelCase</h2>
-					<p>`JS` in `JSON` = JavaScript</p>
-					<br/>
-					<p>
-						account.givenName<br/>
-						<strong>NOT</strong> account.given_name
-					</p>
-					<br/>
-					<p>Underscores for properties/functions are unconventional in JavaScript</p>
-
-
-				</section>
-
-				<section>
-					<h2>Date/Time/Timestamp</h2>
-					<p>Standard Exists, ISO8601</p>
-					<p>
-						<h5>Example:</h5>
-					<pre><code class="hljs" data-trim contenteditable>
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1>POST FOR UPDATE</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 280px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<p>On Instance Resource:</p>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 800px; height: 280px; left: 80px; top: 350px;">
+									<div class="sl-block-content" style="z-index: 13; font-size: 200%;">
+                            <pre><code>POST /applications/abc123
 
 {
-    ...
-    "createdAt": "2016-03-02T18:14:28.123Z"
-    ...
-}
+    "description": "Ok Marvel is better"
+}</code></pre>
+									</div>
+								</div>
+							</section>
+						</section>
+						<section>
+							<div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;">
+								<div class="sl-block-content" style="font-size: 200%; text-align: left;">
+									<h1>Rebuilding
+										<br/>
+										Our
+										<br/>
+										Example
+									</h1>
+								</div>
+							</div>
+						</section>
+						<section>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 528px; left: 80px; top: 70px;">
+								<div class="sl-block-content" style="z-index: 10;">
+									<h3 style="text-align: left;">Rebuilding Our Example</h3>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 118px; left: 80px; top: 171px;">
+								<div class="sl-block-content fragment" style="z-index: 11;" data-fragment-index="0">
+									<p style="text-align: left;">/users</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 153px; left: 79px; top: 291px;">
+								<div class="sl-block-content fragment" style="z-index: 12;" data-fragment-index="1">
+									<p style="text-align: left;">/users/3</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 308px; left: 79px; top: 401px;">
+								<div class="sl-block-content fragment" style="z-index: 13;" data-fragment-index="2">
+									<p style="text-align:left">/users/3/comments</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 308px; left: 80px; top: 490px;">
+								<div class="sl-block-content fragment" style="z-index: 14;" data-fragment-index="3">
+									<p style="text-align:left">/comments</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 401px; left: 480px; top: 168px;">
+								<div class="sl-block-content fragment" style="z-index: 15; line-height: 0.65;" data-has-line-height="" data-fragment-index="0">
+									<p style="text-align:left">
+                            <span style="font-size:0.7em">
+                                <strong>GET: </strong>List all users
+                            </span>
+									</p>
+									<p style="text-align:left">
+                            <span style="font-size:0.7em">
+                                <strong>POST/PUT: </strong>Create User
+                            </span>
+									</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 401px; left: 480px; top: 274px;">
+								<div class="sl-block-content fragment" style="z-index: 16; line-height: 0.65;" data-has-line-height="" data-fragment-index="1">
+									<p style="text-align:left">
+                            <span style="font-size:0.7em">
+                                <strong>GET: </strong>List the user
+                            </span>
+									</p>
+									<p style="text-align:left">
+                            <span style="font-size:0.7em">
+                                <strong>POST/PUT: </strong>Update the user
+                            </span>
+									</p>
+									<p style="text-align:left">
+                            <span style="font-size:0.7em">
+                                <strong>DELETE: </strong>Delete the user
+                            </span>
+									</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 401px; left: 480px; top: 397px;">
+								<div class="sl-block-content fragment" style="z-index: 17; line-height: 0.65;" data-has-line-height="" data-fragment-index="2">
+									<p style="text-align:left">
+                            <span style="font-size:0.7em">
+                                <strong>GET: </strong>List the users Comments
+                            </span>
+									</p>
+									<p style="text-align:left">
+                            <span style="font-size:0.7em">
+                                <strong>POST/PUT: </strong>Create a comment for User
+                            </span>
+									</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 401px; left: 480px; top: 495px;">
+								<div class="sl-block-content fragment" style="z-index: 18; line-height: 0.65;" data-has-line-height="" data-fragment-index="3">
+									<p style="text-align:left">
+                            <span style="font-size:0.7em">
+                                <strong>GET: </strong>List all comments
+                            </span>
+									</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 324px; left: 80px; top: 581px;">
+								<div class="sl-block-content fragment" style="z-index: 19;" data-fragment-index="4">
+									<p>Search:</p>
+									<p>/users?fname=homer</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 355px; left: 525px; top: 581px;">
+								<div class="sl-block-content fragment" style="z-index: 21;" data-fragment-index="4">
+									<p>Pagination:</p>
+									<p>/users?offset=1&amp;limit=10</p>
+								</div>
+							</div>
+						</section>
+						<section>
+							<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+								<div class="sl-block-content" style="z-index: 10;">
+									<h2>Media Types</h2>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 280px;">
+								<div class="sl-block-content" style="z-index: 13;">
+									<ul>
+										<li>Request: Accept Header</li>
+										<li>Response: Content-Type Header</li>
+									</ul>
+									<p>&nbsp;</p>
+									<p>
+										<span style="color:#FF8C00">Accept: application/json</span>
+									</p>
+									<p>
+										<span style="color:#FF8C00">Content-Type: application/json</span>
+									</p>
+								</div>
+							</div>
+						</section>
+						<section class="stack">
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h2>Domain Design</h2>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; width: 715px; left: 123px; top: 280px;">
+									<div class="sl-block-content" style="z-index: 13;">
+										<p>https://example.io/developer/api/public/rest</p>
+										<p>&nbsp;</p>
+										<p>vs.</p>
+										<p>&nbsp;</p>
+										<p>https://api.example.io</p>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h2>Versioning</h2>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; width: 715px; left: 123px; top: 280px;">
+									<div class="sl-block-content" style="z-index: 13;">
+										<p>https://api.example.io/?version=1</p>
+										<p>&nbsp;</p>
+										<p>vs.</p>
+										<p>&nbsp;</p>
+										<p>https://api.example.io/v1</p>
+										<p>&nbsp;</p>
+									</div>
+								</div>
+							</section>
+						</section>
+						<section class="stack">
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+									<div class="sl-block-content">
+										<h1>RESPONSES</h1>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+									<div class="sl-block-content">
+										<h1>ION Working Group</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 395px; height: auto;">
+									<div class="sl-block-content">
+										<h3>http://ionwg.org/draft-ion.html</h3>
+									</div>
+								</div>
+							</section>
+						</section>
+						<section class="stack">
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1 style="text-align: left;">Getting Single User</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 800px; height: 300px; left: 80px; top: 200px;">
+									<div class="sl-block-content" style="z-index: 12; font-size: 150%;" data-highlight-theme="obsidian">
+                            <pre class="json">
+                                <code>GET /users/3
 
-					</code></pre>
-					</p>
-					<br/>
-					<p>USE UTC</p>
-				</section>
 
-				<section>
-					<h2>Header</h2>
-					<ul>
-						<li><code>Accept</code> header</li>
-						<li>Header values are comma delimited in order preference</li>
-					</ul>
-
-					<pre><code class="hljs" data-trim contenteditable>
-
-GET /applications/abc123
-Accept: application/json, text/plain
-
-					</code></pre>
-
-
-				</section>
-
-				<section>
-					<h2>Resource Extension</h2>
-					<p>Adding an extension will override the Accept header</p>
-
-					<pre><code class="hljs" data-trim contenteditable>
-/applications/abc123.json
-/applications/abc123.csv
-/applications/abc123.txt
-
-					</code></pre>
-
-
-				</section>
-
-				<section>
-					<h2>Instance Resource w/ HREF</h2>
-					<p>GET /accounts/xyz789</p>
-
-					<pre><code class="hljs" data-trim contenteditable>
 200 OK
 {
-    "href": "https://api.stormpath.com/v1/accounts/xyz789",
-	"firstName": "Stan",
-	"lastName": "Lee",
-	...
-}
+    "meta": {"href": "https://example.io/users/3"},
+    "fname": "Homer",
+    "lname": "Simpson"
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1 style="text-align:left">Getting All Users</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 880px; height: 483px; left: 46px; top: 179px;">
+									<div class="sl-block-content" style="z-index: 12; font-size: 150%;" data-highlight-theme="obsidian">
+                            <pre class="json">
+                                <code>GET /users
 
-					</code></pre>
 
-
-				</section>
-
-				<section>
-					<section>
-						<h2>Resource Linking</h2>
-						<ul>
-							<li>Linking is fundamental to scalability</li>
-							<li>Tricky in JSON</li>
-							<li>XML has XLink, JSON does not</li>
-						</ul>
-
-						<aside class="note">scalability is talking about users of api</aside>
-					</section>
-
-					<section>
-						<h2>Instance Reference</h2>
-						<p>GET /accounts/xyz789</p>
-
-						<pre><code class="hljs" data-trim contenteditable>
 200 OK
 {
-    "href": "https://api.stormpath.com/v1/accounts/xyz789",
-    "firstName": "Stan",
-    "lastName": "Lee",
-    "directory": ????,
-    ...
-}
+    "meta": {"href": "https://example.io/users},
+    "items": [{
+        "meta": {"href": "https://example.io/users/3"},
+        "fname": "Homer",
+        "lname": "Simpson"
+    }, {
+        "meta": {"href": "https://example.io/users/4"},
+        "fname": "Bart",
+        "lname": "Simpson"
+    }]
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 43px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1 style="text-align:left">Linked Resources</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 880px; height: 483px; left: 46px; top: 179px;">
+									<div class="sl-block-content" style="z-index: 12; font-size: 150%;" data-highlight-theme="obsidian">
+                            <pre class="json">
+                                <code>GET /users/3
 
-						</code></pre>
-					</section>
 
-					<section>
-						<h2>Instance Reference</h2>
-						<p>GET /accounts/xyz789</p>
-
-						<pre><code class="hljs" data-trim contenteditable>
 200 OK
 {
-    "href": "https://api.stormpath.com/v1/accounts/xyz789",
-    "firstName": "Stan",
-    "lastName": "Lee",
-    "directory": {
-        "href": "https://api.stormpath.com/v1/directories/456def"
-    },
-    ...
-}
-
-						</code></pre>
-					</section>
-
-					<section>
-						<h2>Collection Reference</h2>
-						<p>GET /accounts/xyz789</p>
-
-						<pre><code class="hljs" data-trim contenteditable>
-200 OK
-{
-    "href": "https://api.stormpath.com/v1/accounts/xyz789",
-    "firstName": "Stan",
-    "lastName": "Lee",
-    "groups": {
-        "href": "https://api.stormpath.com/v1/accounts/xyz789/groups"
-    },
-    ...
-}
-
-						</code></pre>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h1>Resource Expansion</h1>
-					</section>
-
-					<section>
-						<h1>Account and its Directory</h1>
-					</section>
-
-					<section>
-						<p>GET /accounts/xyz789?expand=directory</p>
-
-						<pre><code class="hljs" data-trim contenteditable>
-200 OK
-{
-    "href": "https://api.stormpath.com/v1/accounts/xyz789",
-    "firstName": "Stan",
-    "lastName": "Lee",
-    "directory": {
-        "href": "https://api.stormpath.com/v1/directory/456def",
-		"name": "Bad Ass Dudes",
-    },
-    ...
-}
-
-						</code></pre>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h1>Pagination</h1>
-					</section>
-
-					<section>
-						<p>Collection Resource support params:</p>
-						<ul>
-							<li>Offset</li>
-							<li>Limit</li>
-						</ul>
-
-						<p>.../applications?offset=50&limit=25</p>
-					</section>
-
-					<section>
-						<pre><code class="hljs" data-trim contenteditable style="max-height:550px;">
-200 OK
-{
-    "href": "https://api.stormpath.com/v1/applications?offset=0&limit=25"
-    "offset": 0,
-    "limit": 25,
-    "first": {
-	    "href": "https://api.stormpath.com/v1/applications?offset=0"
-    },
-    "previous": null,
-    "next": {
-        "href": "https://api.stormpath.com/v1/applications?offset=25"
-    },
-    "last": {
-        "href": "..."
-    },
-    "items": [
-        {
-            "href": "..."
-        },
-        {
-            "href": "..."
-        },
-        ...
-    ]
-
-}
-							</code></pre>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h1>Many to Many</h1>
-					</section>
-
-					<section>
-						<h2></h2>
-						<ul>
-							<li>A group can have many accounts</li>
-							<li>An account can be in many groups</li>
-							<li>Each mapping is a resource:</li>
-						</ul>
-						<p><code>GroupMembership</code></p>
-					</section>
-
-					<section>
-						<pre><code class="hljs" data-trim contenteditable style="max-height:550px;">
-200 OK
-{
-    "href":"https://api.stormpath.com/v1/accounts/xyz789/groupMemberships",
-    "offset":0,
-    "limit":25,
-    "size":1,
-    "items":[
-        {
-            "href":"https://api.stormpath.com/v1/groupMemberships/987fds",
-            "account":{
-                "href":"https://api.stormpath.com/v1/accounts/xyz789"
-            },
-            "group":{
-                "href":"https://api.stormpath.com/v1/groups/567hjk"
-            }
+    "meta": {"href": "https://example.io/users/3},
+    "fname": "Homer",
+    "lname": "Simpson",
+    "comments": {
+        "meta": {
+            "href": "https://example.io/users/3/comments"
         }
-    ]
-}
-						</code></pre>
-					</section>
-				</section>
+    }
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 22px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1 style="text-align:left">Discoverable Forms</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 880px; height: 533px; left: 53px; top: 127px;">
+									<div class="sl-block-content" style="z-index: 12; font-size: 150%;" data-highlight-theme="obsidian">
+                            <pre class="json">
+                                <code>GET /users
 
-				<section>
-					<section><h1>Errors</h1></section>
-					<section>
-						<ul>
-							<li>As descriptive as possible</li>
-							<li>As much information as possible</li>
-							<li>Developers are your customer</li>
-						</ul>
-					</section>
+200 OK
+{
+    "meta": {"href": "https://example.io/users"},
+    "items": [...],
+    "create": {
+        "meta": {
+            "href": "https://example.io/users",
+            "rel": ["create-form"],
+            "method": "POST"
+        },
+        "items": [
+            {"name": "fname"},
+            {"name": "lname}
+        ]
+    }
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 22px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1 style="text-align:left">Discoverable Forms</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 880px; height: 533px; left: 53px; top: 127px;">
+									<div class="sl-block-content" style="z-index: 12; font-size: 140%;" data-highlight-theme="obsidian">
+                            <pre class="json">
+                                <code>GET /users
 
-					<section>
-						<p>POST /directories</p>
+200 OK
+{
+    "meta": {"href": "https://example.io/users"},
+    "items": [...],
+    "create": {...}
+    "search": {
+        "meta": {
+            "href": "https://example.io/users",
+            "rel": ["search-form"],
+            "method": "GET"
+        },
+        "items": [
+            {"name": "fname"},
+            {"name": "lname}
+        ]
+    }
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 53px; top: 70px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h2 style="text-align:left">The Gateway (example.io/)</h2>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 880px; height: 347px; left: 53px; top: 247px;">
+									<div class="sl-block-content" style="z-index: 12; font-size: 140%;" data-highlight-theme="obsidian">
+                            <pre class="json">
+                                <code>GET /
 
-						<pre><code class="hljs" data-trim contenteditable style="max-height:550px;">
+200 OK
+{
+    "meta": {"href": "https://example.io/"},
+    "users": {
+        "meta": {
+            "href": "https://example.io/users",
+            "rel": ["collection"]
+        }
+    }
+}</code></pre>
+									</div>
+								</div>
+							</section>
+						</section>
+						<section>
+							<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 248px; height: auto;">
+								<div class="sl-block-content">
+									<h1>How to respond</h1>
+									<h1>with errors</h1>
+								</div>
+							</div>
+						</section>
+						<section class="stack">
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<h1 style="text-align:left">Errors Should...</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+									<div class="sl-block-content" style="z-index: 12;">
+										<ul>
+											<li class="fragment" data-fragment-index="0">be as descriptive as possible</li>
+											<li class="fragment" data-fragment-index="1">provide a way to get more info</li>
+											<li class="fragment" data-fragment-index="2">be clear about http error code</li>
+											<li class="fragment" data-fragment-index="3">have reference to internal info</li>
+										</ul>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h1 style="text-align:left">Error Message</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 906px; height: 460px; left: 32px; top: 200px;">
+									<div class="sl-block-content" style="z-index: 12; font-size: 130%;" data-highlight-theme="obsidian">
+                            <pre class="json">
+                                <code>POST /users
+
+
 409 Conflict
 
 {
     "status": 409,
     "code": 40924,
-    "property": "name",
-    "message": "A directory with the name `Deadpool` already exists.",
-    "developerMessage": "A directory named `Deadpool` already exists. If you have a stale local cache, please expire it now",
-    "moreInfo": "https://docs.stormpath.com/errors/40924"
-}
-						</code></pre>
-					</section>
-				</section>
-
-				<section>
-					<section><h1>Security</h1></section>
-					<section>
-						<ul>
-							<li>Avoid sessions when possible</li>
-							<li>Autorize based on resource, NOT URL!</li>
-							<li>Use API Keys instead of Username/Password</li>
-							<li>Use Existing Protocols</li>
-						</ul>
-					</section>
-					<section>
-						<h2>401 vs 403</h2>
-
-						<ul>
-							<li>401 "Unauthorized" really means Unauthenticated</li>
-							<li>403 "Forbidden" really means Unauthorized</li>
-						</ul>
-
-						<aside class="notes">
-							<ul>
-								<li>401: you need valid credentials for me to respond to this request.</li>
-								<li>403: I understood your credentials, but NO!</li>
-							</ul>
-						</aside>
-					</section>
-				</section>
-
-				<section>
-					<section><h1>IDs</h1></section>
-					<section>
-						<ul>
-							<li>IDs should be opaque</li>
-							<li>Should be globally unique</li>
-							<li>Avoid auto inc ids</li>
-							<li>Good Candidates: UUID and uniqid()</li>
-						</ul>
-
-						<aside class="notes">uniqid() This function does not create random nor unpredictable strings. This function must not be used for security purposes. Use a cryptographically secure random function/generator and cryptographically secure hash functions to create unpredictable secure IDs.</aside>
-					</section>
-				</section>
-
-				<section>
-					<section><h1>Method Overrides</h1></section>
-					<section>
-						<p>POST /accounts/xyz789?_method=DELETE</p>
-					</section>
-				</section>
-
-				<section>
-					<h1>Designing a Beautiful REST+JSON API</h1>
-					<p>
-					<h3>Brian Retterer</h3>
-					<h5>brian@stormpath.com</h5>
-					<h5>@bretterer</h5>
-					</p>
-				</section>
-
-
+    "property": "email",
+    "message": "A user with the email `homer@thesimpsons.com` already exists.",
+    "developerMessage": "A user with the email `homer@thesimpsons`
+              already exists. If you have a stale local cache,
+              please expire it now",
+    "moreInfo": "https://docs.example.io/errors/40924"
+}</code></pre>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+									<div class="sl-block-content" style="z-index: 10;">
+										<h2 style="color:rgb(34, 34, 34); font-size:1.6em">
+											<span style="color:#FFFFFF">401 VS 403</span>
+										</h2>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 846px; left: 67px; top: 280px;">
+									<div class="sl-block-content" style="z-index: 12;">
+										<ul>
+											<li>401 "Unauthorized" really means Unauthenticated</li>
+											<li>403 "Forbidden" really means Unauthorized</li>
+										</ul>
+									</div>
+								</div>
+							</section>
+						</section>
+						<section class="stack">
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 43px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<h1>Side Notes</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 171px;">
+									<div class="sl-block-content" style="z-index: 12;">
+										<p>Date/Time/Timestamp</p>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 800px; height: 167px; left: 80px; top: 267px;">
+									<div class="sl-block-content" style="z-index: 13; font-size: 151%;">
+                            <pre class="json">
+                                <code>{
+    ...
+    "createdAt": "2016-10-19T17:55:00.123Z"
+    ...
+}</code></pre>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 521px;">
+									<div class="sl-block-content" style="z-index: 14;">
+										<p>Use UTC (Zulu) time</p>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 43px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<h1>Side Notes</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 180px; top: 171px;">
+									<div class="sl-block-content" style="z-index: 12;">
+										<p>Resource Extensions</p>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="width: 560px; height: 109px; left: 200px; top: 296px;">
+									<div class="sl-block-content" style="z-index: 13; font-size: 151%;">
+                            <pre class="json">
+                                <code>https://example.io/users/3.xml
+https://example.io/users/3.txt
+https://example.io/users/3.html</code></pre>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 180px; top: 521px;">
+									<div class="sl-block-content" style="z-index: 14;">
+										<p>Adding an extension will override the Accept header</p>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 43px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<h1>Side Notes</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 180px; top: 171px;">
+									<div class="sl-block-content" style="z-index: 12;">
+										<p>Allow Method Overrides</p>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="code" style="min-width: 30px; min-height: 30px; width: 500px; height: 43px; left: 230px; top: 297px;">
+									<div class="sl-block-content" style="z-index: 13; font-size: 150%;">
+                            <pre class="json">
+                                <code>POST /accounts/3?_method=DELETE</code></pre>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 420px;">
+									<div class="sl-block-content" style="z-index: 14;">
+										<p>This should be done if you expect your users to use the web browser or some way that does not allow for anything verbs other than GET and POST</p>
+									</div>
+								</div>
+							</section>
+							<section>
+								<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 43px; height: auto;">
+									<div class="sl-block-content" style="z-index: 11;">
+										<h1>Side Notes</h1>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 180px; top: 171px;">
+									<div class="sl-block-content" style="z-index: 12;">
+										<p>ID's</p>
+									</div>
+								</div>
+								<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;">
+									<div class="sl-block-content" style="z-index: 13;">
+										<ul>
+											<li>Avoid auto incrementing ids</li>
+											<li>Should be globally unique</li>
+											<li>Good Candidate: UUID</li>
+										</ul>
+									</div>
+								</div>
+							</section>
+						</section>
+						<section class="has-dark-background" data-background-color="#222222">
+							<div class="sl-block" data-block-type="text" style="height: auto; width: 365px; left: 435px; top: 284px;">
+								<div class="sl-block-content" style="z-index: 11;">
+									<p style="text-align: left;">
+										<span style="font-size:1.6em">Beautiful REST</span>
+									</p>
+									<p style="text-align: left;">
+										<span style="font-size:1.6em">API Design</span>
+									</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 400px; top: 210px;">
+								<div class="sl-block-content" data-line-x1="20" data-line-y1="240" data-line-x2="20" data-line-y2="-40" data-line-color="#ff9900" data-line-start-type="none" data-line-end-type="none" style="z-index: 12;">
+									<svg
+											xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMidYMid" width="1" height="280" viewBox="20 -40 1 280">
+										<line stroke="rgba(0,0,0,0)" stroke-width="15" x1="20" y1="240" x2="20" y2="-40"></line>
+										<line stroke="#ff9900" stroke-width="2" x1="20" y1="240" x2="20" y2="-40"></line>
+									</svg>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; width: 320px; left: 44px; top: 261px;">
+								<div class="sl-block-content" style="z-index: 13;">
+									<p style="text-align: right;">Brian Retterer</p>
+									<p style="text-align: right;">@bretterer</p>
+									<p style="text-align: right;">&nbsp;</p>
+									<p style="text-align: right;">brian@stormpath.com</p>
+								</div>
+							</div>
+							<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 640px; left: 160px; top: 70px;">
+								<div class="sl-block-content" style="z-index: 14;">
+									<h2>Thank You!</h2>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
 			</div>
-
 		</div>
 		<div class="color-bar bottom">
 			<span>Brian Retterer | brian@stormpath.com | @bretterer</span>
@@ -709,10 +933,10 @@ Accept: application/json, text/plain
 			// Full list of configuration options available at:
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
-				controls: true,
+				controls: false,
 				progress: true,
 				history: true,
-				center: true,
+				center: false,
 
 				transition: 'slide', // none/fade/slide/convex/concave/zoom
 
